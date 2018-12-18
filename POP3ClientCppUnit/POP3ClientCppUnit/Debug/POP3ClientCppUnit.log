@@ -1,0 +1,77 @@
+﻿Build started 18.12.2018 16:30:21.
+     1>Project "D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\POP3ClientCppUnit\POP3ClientCppUnit.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\POP3ClientCppUnit.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\CppUnit_1.12.1\include /I..\Kernel /ZI /nologo /W0 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ChAuto.cpp ClAuto.cpp MainTest.cpp RUN.cpp UserAuto.cpp main.cpp
+         ChAuto.cpp
+         Generating Code...
+         Compiling...
+         main.cpp
+         UserAuto.cpp
+         RUN.cpp
+         MainTest.cpp
+         ClAuto.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:..\Kernel /LIBPATH:..\CppUnit_1.12.1\lib winmm.lib ws2_32.lib cppunitd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\POP3ClientCppUnit.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.lib" /MACHINE:X86 Debug\buffers.obj
+         Debug\buffersQueue.obj
+         Debug\Client.obj
+         Debug\Client_DTP.obj
+         Debug\Distribution.obj
+         Debug\errorObject.obj
+         Debug\fsm.obj
+         Debug\fsmSystem.obj
+         Debug\kernelAPI.obj
+         Debug\KernelFunctions.obj
+         Debug\linuxFunctions.obj
+         Debug\logAutomate.obj
+         Debug\LogFile.obj
+         Debug\mailbox.obj
+         Debug\messages.obj
+         Debug\msgInterface.obj
+         Debug\NetFSM.obj
+         Debug\postOffice.obj
+         Debug\standardMsg.obj
+         Debug\stdMsgpc16pl16.obj
+         Debug\systemFunctions.obj
+         Debug\systemTCP.obj
+         Debug\thread.obj
+         Debug\timer.obj
+         Debug\TransportInterface.obj
+         Debug\UdpFSM.obj
+         Debug\UdpLogInterface.obj
+         Debug\ChAuto.obj
+         Debug\ClAuto.obj
+         Debug\main.obj
+         Debug\MainTest.obj
+         Debug\RUN.obj
+         Debug\UserAuto.obj
+     1>buffers.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+     1>cppunitd.lib(AdditionalMessage.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(AdditionalMessage.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(Asserter.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(Asserter.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(Exception.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(Exception.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(Message.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(Message.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(SourceLine.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(SourceLine.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(Test.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(Test.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestCase.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestCase.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestComposite.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestComposite.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestLeaf.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestLeaf.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestPath.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestPath.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestSuite.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestSuite.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestFactoryRegistry.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestFactoryRegistry.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestNamer.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestNamer.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TestSuiteBuilderContext.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TestSuiteBuilderContext.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(TypeInfoHelper.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(TypeInfoHelper.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+     1>cppunitd.lib(Protector.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'cppunitd.lib(Protector.obj)' or at 'D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\vc100.pdb'; linking object as if no debug info
+         POP3ClientCppUnit.vcxproj -> D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.exe;#1" /manifest Debug\POP3ClientCppUnit.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\POP3ClientCppUnit.unsuccessfulbuild".
+         Touching "Debug\POP3ClientCppUnit.lastbuildstate".
+     1>Done Building Project "D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\POP3ClientCppUnit\POP3ClientCppUnit.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.25

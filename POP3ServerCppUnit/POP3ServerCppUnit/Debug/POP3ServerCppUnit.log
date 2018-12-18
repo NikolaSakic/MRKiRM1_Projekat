@@ -1,0 +1,49 @@
+﻿Build started 18.12.2018 16:04:06.
+     1>Project "D:\RA230-2015\mrkirm1\workspace\POP3ServerCppUnit\POP3ServerCppUnit\POP3ServerCppUnit.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\POP3ServerCppUnit.lastbuildstate".
+       InitializeBuildStatus:
+         Touching "Debug\POP3ServerCppUnit.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\CppUnit_1.12.1\include /I..\Kernel /ZI /nologo /W0 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Kernel\buffers.cpp ..\Kernel\buffersQueue.cpp ..\Kernel\Client.cpp ..\Kernel\Client_DTP.cpp ..\Kernel\Distribution.cpp ..\Kernel\errorObject.cpp ..\Kernel\fsm.cpp ..\Kernel\fsmSystem.cpp ..\Kernel\kernelAPI.cpp ..\Kernel\KernelFunctions.cpp ..\Kernel\linuxFunctions.cpp ..\Kernel\logAutomate.cpp ..\Kernel\LogFile.cpp ..\Kernel\mailbox.cpp ..\Kernel\messages.cpp ..\Kernel\msgInterface.cpp ..\Kernel\NetFSM.cpp ..\Kernel\postOffice.cpp ..\Kernel\standardMsg.cpp ..\Kernel\stdMsgpc16pl16.cpp ..\Kernel\systemFunctions.cpp ..\Kernel\systemTCP.cpp ..\Kernel\thread.cpp ..\Kernel\timer.cpp ..\Kernel\TransportInterface.cpp ..\Kernel\UdpFSM.cpp ..\Kernel\UdpLogInterface.cpp main.cpp MainTest.cpp RUN.cpp SrAuto.cpp
+         SrAuto.cpp
+         RUN.cpp
+         MainTest.cpp
+     1>d:\ra230-2015\mrkirm1\workspace\pop3servercppunit\pop3servercppunit\maintest.h(14): fatal error C1083: Cannot open include file: 'ClAuto.h': No such file or directory
+         main.cpp
+     1>d:\ra230-2015\mrkirm1\workspace\pop3servercppunit\pop3servercppunit\main.cpp(8): fatal error C1083: Cannot open include file: 'ChAuto.h': No such file or directory
+         UdpLogInterface.cpp
+         UdpFSM.cpp
+         TransportInterface.cpp
+         timer.cpp
+         thread.cpp
+         systemTCP.cpp
+         systemFunctions.cpp
+         stdMsgpc16pl16.cpp
+         standardMsg.cpp
+         postOffice.cpp
+         NetFSM.cpp
+         msgInterface.cpp
+         messages.cpp
+         mailbox.cpp
+         LogFile.cpp
+         logAutomate.cpp
+         Generating Code...
+         Compiling...
+         linuxFunctions.cpp
+         KernelFunctions.cpp
+         kernelAPI.cpp
+         fsmSystem.cpp
+         fsm.cpp
+         errorObject.cpp
+         Distribution.cpp
+         Client_DTP.cpp
+         Client.cpp
+         buffersQueue.cpp
+         buffers.cpp
+         Generating Code...
+     1>Done Building Project "D:\RA230-2015\mrkirm1\workspace\POP3ServerCppUnit\POP3ServerCppUnit\POP3ServerCppUnit.vcxproj" (rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:13.24
