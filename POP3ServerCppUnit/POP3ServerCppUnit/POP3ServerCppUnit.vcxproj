@@ -111,6 +111,7 @@
     <ClInclude Include="..\Kernel\UdpLogInterface.h" />
     <ClInclude Include="..\Kernel\uniSock.h" />
     <ClInclude Include="const.h" />
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MainTest.h" />
     <ClInclude Include="SrAuto.h" />

@@ -11,8 +11,7 @@
 #include <fsmsystem.h>
 #include "../kernel/logfile.h"
 
-#include "ClAuto.h"
-#include "UserAuto.h"
+#include "SrAuto.h"
 
 class MainTests : public CPPUNIT_NS::TestFixture
 {
@@ -24,8 +23,7 @@ class MainTests : public CPPUNIT_NS::TestFixture
   
 private:
     FSMSystem *pSys;
-    UserAuto * pMF;
-    ClAuto * POP3ClientFSM;
+    SrAuto * POP3ServerFSM;
     LogFile *lf;
     
 public:

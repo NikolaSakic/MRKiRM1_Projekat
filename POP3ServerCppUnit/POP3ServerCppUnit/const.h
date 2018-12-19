@@ -10,7 +10,7 @@ const uint8 SR_AUTOMATE_TYPE_ID = 0x00;
 const uint8 TEST_AUTOMATE_TYPE_ID = 0x01;
 
 const uint8 SR_AUTOMATE_MBX_ID = 0x00;
-const uint8 TEST_MBX_ID = 0x03;
+const uint8 TEST_MBX_ID = 0x01;
 
 //	Server states
 enum ClStates {	FSM_SR_IDLE, 

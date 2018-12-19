@@ -10,9 +10,9 @@ uint16 msgcode;
 void MainTests::setUp()
 {
     pSys = new FSMSystem(4, 4);
-    pMF  = new UserAuto();
+    //pMF  = new UserAuto();
 
-    POP3ClientFSM = new ClAuto();
+    POP3ServerFSM = new SrAuto();
 
    
     uint8 buffClassNo = 4;
@@ -25,8 +25,8 @@ void MainTests::setUp()
     LogAutomateNew::SetLogInterface(lf);	
 
    
-    pSys->Add(POP3ClientFSM, CL_AUTOMATE_TYPE_ID, 1, true);
-    pSys->Add(pMF, TEST_AUTOMATE_TYPE_ID, 1, true);
+    pSys->Add(POP3ServerFSM, SR_AUTOMATE_TYPE_ID, 1, true);
+    //pSys->Add(pMF, TEST_AUTOMATE_TYPE_ID, 1, true);
 }
 
 void MainTests::tearDown()
@@ -35,7 +35,7 @@ void MainTests::tearDown()
 
 void MainTests::UserTest()
 {
-	pMF->FSM_User_Connecting_User_Connected();
+	/*pMF->FSM_User_Connecting_User_Connected();
 
 	POP3ClientFSM->FSM_Cl_Connecting_Cl_Connectiong_Accept();
 
@@ -43,5 +43,5 @@ void MainTests::UserTest()
 	POP3ClientFSM->Process(msg);
 
 	msgcode = POP3ClientFSM->GetState();
-	CPPUNIT_ASSERT_EQUAL((uint16)FSM_Cl_User_Check, msgcode);
+	CPPUNIT_ASSERT_EQUAL((uint16)FSM_Cl_User_Check, msgcode);*/
 }

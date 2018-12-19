@@ -2,8 +2,16 @@
 
 #include "const.h"
 #include "SrAuto.h"
+#include "dirent.h"
+
+bool g_ProgramEnd = false;
 
 #define StandardMessageCoding 0x00
+
+char* users[4] = {"Nikola\0", "Aleksandar\0", "Stefan\0", "Milan\0"};
+char* passwords[4] = {"123\0", "1234\0", "12345\0", "123456\0"};
+int INDEKS_USERA;
+
 
 /*
  *3. broj vremenskih kontrola
@@ -64,6 +72,15 @@ void SrAuto::Initialize() {
 void SrAuto::FSM_Sr_Idle(){
 	int c;
 
+	WSADATA wsaData;
+
+	// Initialize windows sockets library for this process
+    if (WSAStartup(MAKEWORD(2,2), &wsaData) != 0)
+    {
+        printf("WSAStartup failed with error: %d\n", WSAGetLastError());
+        return;
+    }
+
     //Create socket
     m_Server_Socket = socket(AF_INET , SOCK_STREAM , 0);
     if (m_Server_Socket == -1)
@@ -80,6 +97,7 @@ void SrAuto::FSM_Sr_Idle(){
     //Bind
     if( bind(m_Server_Socket,(struct sockaddr *)&server , sizeof(server)) < 0)
     {
+ printf("WSAStartup failed with error: %d\n", WSAGetLastError());
         //print the error message
         perror("bind failed. Error");
         return;
@@ -103,7 +121,14 @@ void SrAuto::FSM_Sr_Idle(){
     puts("Connection accepted");
 
 	/*TODO: send +OK send*/
-	
+	char message[] = "+OK\r\n";
+
+	if( send(m_Client_Socket , message , strlen(message), 0) < 0)
+	{
+		puts("Send failed");
+		return;
+	}
+
 
 	SetState(FSM_SR_AUTHORISING_USERNAME);
 
@@ -128,10 +153,10 @@ void SrAuto::FSM_Sr_Authorising_username(){
 	uint16 size = buffer[2];
 
 	memcpy(data,buffer + 4,size);
-	data[size]=0;
+	data[size-2]=0;
 	printf("%s",data);
 
-	for(int i; i < NUM_USERS; i++)
+	for(int i = 0; i < NUM_USERS; i++)
 	{
 		if(strcmp(data + 5, users[i]) == 0) //provera user-a
 		{
@@ -141,7 +166,7 @@ void SrAuto::FSM_Sr_Authorising_username(){
 		}
 	}
 
-	char *message;
+	char message[20];
 	if(user_valid == 1)
 	{
 		//Send some data
@@ -176,19 +201,19 @@ void SrAuto::FSM_Sr_Authorising_pass(){
 	uint16 size = buffer[2];
 
 	memcpy(data,buffer + 4,size);
-	data[size]=0;
+	data[size-2]=0;
 	printf("%s",data);
 
-	if(strcmp(data + 5, users[INDEKS_USERA]) == 0) //provera user-a
+	if(strcmp(data + 5, passwords[INDEKS_USERA]) == 0) //provera user-a
 	{
 		pass_valid = 1;
 	}
 	
-	char *message;
+	char message[20];
 	if(pass_valid == 1)
 	{
 		//Send some data
-		strcpy(message, "+OK\r\n\0");
+		strcpy(message, "+OK\r\n");
 		if( send(m_Client_Socket , message , strlen(message), 0) < 0)
 		{
 			puts("Send failed");
@@ -210,6 +235,55 @@ void SrAuto::FSM_Sr_Authorising_pass(){
 	
 }
 
+
+void Mail_Info(unsigned char* arg){
+	struct dirent *de;  // Pointer for directory entry 
+  
+    // opendir() returns a pointer of DIR type.  
+    DIR *dr = opendir("D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox"); 
+    FILE* file;
+
+    if (dr == NULL)  // opendir returns NULL if couldn't open directory 
+    { 
+        printf("Could not open current directory" ); 
+        return; 
+    } 
+  
+	int size = 0;
+	int i = 0;
+	char folder[] = "D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox//";
+	char *path = NULL;//you need char buffer to store string 
+
+    while ((de = readdir(dr)) != NULL)
+	{
+		if(de->d_type != DT_DIR)
+		{
+			printf("%s\n", de->d_name);
+			
+			path = (char*)malloc(strlen(folder) + strlen(de->d_name) + 1);//ENsure hexfile holds full filename
+			strcpy(path,folder); //assuming you hold path in warea
+			strcat(path, de->d_name);//Assuming ypu hold filename in hex
+			file = fopen(path, "rb");
+			//file = fopen(strcat("D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox", de->d_name), "rb");
+			fseek(file, 0, SEEK_END);
+			size += ftell(file);
+			
+			i++;
+
+			free(path);
+			fclose(file);
+			
+		}
+	}
+  
+
+    closedir(dr);     
+
+	arg[0] = i;
+	arg[1] = size;
+
+}
+
 void SrAuto::FSM_Sr_Mail_Check(){
 	char* data = new char[255];
 	uint8* buffer = GetParam(PARAM_DATA);
@@ -219,6 +293,37 @@ void SrAuto::FSM_Sr_Mail_Check(){
 	data[size]=0;
 	printf("%s",data);
 
+
+	unsigned char args[2];
+	Mail_Info(&args[0]);
+
+	char message[20];
+	char argument_t[20], argument_t1[20];
+	strcpy(message, "+OK ");
+	strcat(message, itoa(args[0], argument_t, 10));
+	strcat(message, " ");
+    strcat(message, itoa(args[1], argument_t1, 10));
+	strcat(message, "\r\n");
+
+	if( send(m_Client_Socket , message , strlen(message), 0) < 0)
+	{
+		puts("Send failed");
+		return;
+	}
+
+	SetState(FSM_SR_SENDING);
+
+}
+
+void SrAuto::FSM_Sr_Sending(){
+
+}
+
+void SrAuto::FSM_Sr_Deleting(){
+
+}
+
+void SrAuto::FSM_Sr_Disconnect(){
 
 }
 

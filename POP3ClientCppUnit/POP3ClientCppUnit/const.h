@@ -54,7 +54,7 @@ const uint16 MSG_User_Save_Mail			= 0x0015;
 const uint16 MSG_User_Disconnected		= 0x0014;
 
 
-#define ADRESS "localhost" /*"localhost"*/
+#define ADRESS "10.81.35.43" /*"localhost"*/
 //#define ADRESS "mail.spymac.com"
 //#define ADRESS "krtlab8"
 #define PORT 110

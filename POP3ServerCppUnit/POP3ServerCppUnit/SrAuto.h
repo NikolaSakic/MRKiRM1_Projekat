@@ -11,9 +11,6 @@
 
 #define NUM_USERS 4
 
-char* users[4] = {"Nikola\0", "Aleksandar\0", "Stefan\0", "Milan\0"};
-char* passwords[4] = {"123\0", "1234\0", "12345\0", "123456\0"};
-int INDEKS_USERA;
 
 class SrAuto : public FiniteStateMachine {
 
