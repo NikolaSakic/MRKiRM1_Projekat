@@ -11,7 +11,7 @@ bool g_ProgramEnd = false;
 char* users[4] = {"Nikola\0", "Aleksandar\0", "Stefan\0", "Milan\0"};
 char* passwords[4] = {"123\0", "1234\0", "12345\0", "123456\0"};
 int INDEKS_USERA;
-
+int NN;
 
 /*
  *3. broj vremenskih kontrola
@@ -279,6 +279,7 @@ void Mail_Info(unsigned char* arg){
 
     closedir(dr);     
 
+	NN  = i;
 	arg[0] = i;
 	arg[1] = size;
 
@@ -311,20 +312,191 @@ void SrAuto::FSM_Sr_Mail_Check(){
 		return;
 	}
 
-	SetState(FSM_SR_SENDING);
+	if(args[0] > 0)
+		SetState(FSM_SR_SENDING);
+	else
+		SetState(FSM_SR_DISCONNECT);
 
 }
 
 void SrAuto::FSM_Sr_Sending(){
 
+	char* data = new char[255];
+	uint8* buffer = GetParam(PARAM_DATA);
+	uint16 size = buffer[2];
+
+	memcpy(data,buffer + 4,size);
+	data[size]=0;
+	printf("%s",data);
+
+
+	struct dirent *de;  // Pointer for directory entry 
+
+
+    // opendir() returns a pointer of DIR type.  
+    DIR *dr = opendir("D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox"); 
+    FILE* file;
+
+    if (dr == NULL)  // opendir returns NULL if couldn't open directory 
+    { 
+        printf("Could not open current directory" ); 
+        return; 
+    } 
+  
+	int i = 0;
+	int mail_size = 0;
+	char folder[] = "D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox//";
+	char *path = NULL;//you need char buffer to store string 
+	char mail_buffer[255];
+	char message[255];
+
+    while ((de = readdir(dr)) != NULL)
+	{
+		if(de->d_type != DT_DIR)
+		{
+			if(++i == NN)
+			{
+				printf("%s\n", de->d_name);
+			
+				path = (char*)malloc(strlen(folder) + strlen(de->d_name) + 1);//ENsure hexfile holds full filename
+				strcpy(path,folder); //assuming you hold path in warea
+				strcat(path, de->d_name);//Assuming ypu hold filename in hex
+				file = fopen(path, "rb");
+				//file = fopen(strcat("D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox", de->d_name), "rb");
+				fseek(file, 0, SEEK_END);
+				mail_size = ftell(file);
+				fseek(file, 0, SEEK_SET);
+
+				
+				char buffer_size[20];
+				strcpy(message, "+OK ");
+				strcat(message, itoa(mail_size, buffer_size, 10));
+				strcat(message, " octets\r\n");
+				fread(mail_buffer, mail_size, 1, file);
+				mail_buffer[mail_size] = '\0';
+				/*
+				while(fgets(mail_buffer, 255, file)) {
+					strcat(message, mail_buffer);
+				}		
+				strcat(message, "\r\n");
+				*/
+				strcat(message, mail_buffer);
+				strcat(message, "\r\n.\r\n");
+
+				free(path);
+				fclose(file);
+			
+			}
+
+		}
+	}
+  
+
+	if( send(m_Client_Socket , message , strlen(message), 0) < 0)
+	{
+		puts("Send failed");
+		return;
+	}
+
+    closedir(dr);
+
+
+	SetState(FSM_SR_DELETING);
 }
 
 void SrAuto::FSM_Sr_Deleting(){
+	char* data = new char[255];
+	uint8* buffer = GetParam(PARAM_DATA);
+	uint16 size = buffer[2];
+
+	memcpy(data,buffer + 4,size);
+	data[size]=0;
+	printf("%s",data);
+
+
+	struct dirent *de;  // Pointer for directory entry 
+
+
+    // opendir() returns a pointer of DIR type.  
+    DIR *dr = opendir("D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox"); 
+
+    if (dr == NULL)  // opendir returns NULL if couldn't open directory 
+    { 
+        printf("Could not open current directory" ); 
+        return; 
+    } 
+  
+	int i = 0;
+	int mail_size = 0;
+	char folder[] = "D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox//";
+	char *path = NULL;//you need char buffer to store string 
+	char mail_buffer[255];
+	char message[255];
+
+    while ((de = readdir(dr)) != NULL)
+	{
+		if(de->d_type != DT_DIR)
+		{
+			if(++i == NN)
+			{
+				printf("%s\n", de->d_name);
+			
+				path = (char*)malloc(strlen(folder) + strlen(de->d_name) + 1);//ENsure hexfile holds full filename
+				strcpy(path,folder); //assuming you hold path in warea
+				strcat(path, de->d_name);//Assuming ypu hold filename in hex	
+
+				if(remove(path) == 0)
+					printf("File remove successfully\n");
+				else
+					printf("Unable to delete file\n");
+
+				free(path);
+
+			}
+
+		}
+	}
+  
+
+	char buffer_size[20];
+	strcpy(message, "+OK OBRISAO SAM MEJL");
+	strcat(message, "\r\n");
+
+	if( send(m_Client_Socket , message , strlen(message), 0) < 0)
+	{
+		puts("Send failed");
+		return;
+	}
+
+    closedir(dr);
+
+	NN--;
+	if(NN > 0)
+		SetState(FSM_SR_SENDING);
+	else
+		SetState(FSM_SR_DISCONNECT);
+
 
 }
 
 void SrAuto::FSM_Sr_Disconnect(){
+	char message[50];
 
+	strcpy(message, "+OK SESSION ENDED \r\n");
+	
+	if( send(m_Client_Socket , message , strlen(message), 0) < 0)
+	{
+		puts("Send failed");
+		return;
+	}
+	
+	closesocket(m_Server_Socket);
+
+	g_ProgramEnd = true;
+
+	CloseHandle(m_hThread);
+
+	SetState(FSM_SR_IDLE);
 }
 
 void SrAuto::NetMsg_2_FSMMsg(const char* apBuffer, uint16 anBufferLength) {
