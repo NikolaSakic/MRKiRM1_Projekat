@@ -40,6 +40,7 @@ public:
 	void FSM_Sr_Sending();
 	void FSM_Sr_Deleting();
 	void FSM_Sr_Disconnect();
+	void FSM_Sr_Last_State();
 
 	void Start();
 

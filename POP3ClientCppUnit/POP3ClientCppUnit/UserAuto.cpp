@@ -7,6 +7,9 @@
 
 bool g_ProgramEnd = false;
 
+const int height = 5;
+const int width = 5;
+
 #define StandardMessageCoding 0x00
 
 UserAuto::UserAuto() : FiniteStateMachine(USER_AUTOMATE_TYPE_ID, USER_AUTOMATE_MBX_ID, 0, 3, 3) {
@@ -73,18 +76,69 @@ void UserAuto::FSM_User_Idle_Set_All(){
 	SetState(FSM_User_Connecting);
 }
 
+void getPosition(char c, char* key, int* position){
+	
+	int i;
+	for(i = 0; i < strlen(key); i++)
+	{
+		if(key[i] == c)
+			break;
+	}
+
+	position[0] = i / width;
+	position[1] = i - position[0]*width;
+
+}
+
+void PlayFair(char* text)
+{
+	char key[] = "FTNABCDEGHIKLMOPQRSUVWXYZ\0";
+	int position1[2];
+	int position2[2];
+
+	int size = strlen(text);
+	if(size%2 == 1)
+	{
+		text[size] = 'Z';
+		text[size+1] = '\0';
+	}
+
+	for(int i=0; i < strlen(text); i+=2)
+	{
+		getPosition(text[i], key, position1);
+		getPosition(text[i+1], key, position2);
+
+		if(position1[0] == position2[0] && position1[1] == position2[1]){
+			text[i+1] = 'X';
+		}
+		else if(position1[0] == position2[0]){
+			text[i] = key[position1[0]*width + (++position1[1]%width)];
+			text[i+1] = key[position2[0]*width + (++position2[1]%width)];
+		}else if (position1[1] == position2[1]){
+			text[i] = key[(++position1[0]%height)*width + position1[1]];
+			text[i+1] = key[(++position2[0]%height)*width + position2[1]];
+		}
+		else{
+			text[i] = key[position1[0]*width + position2[1]];
+			text[i+1] = key[position2[0]*width + position1[1]];
+		}
+	}
+}
+
 void UserAuto::FSM_User_Connecting_User_Connected(){
 
 	char name[20];
 	char pass[20];
 	//printf("Username: ");
 	//scanf("%s",name);
-	strcpy(name,"Nikola\0");
+	strcpy(name,"NIKOLA\0");
 	//printf("Pasword: ");
 	//scanf("%s",pass);
-	strcpy(pass,"123\0");
+	strcpy(pass,"ABCD\0");
 
-	
+	PlayFair(name);
+	PlayFair(pass);
+
 	PrepareNewMessage(0x00, MSG_User_Name_Password);
 	SetMsgToAutomate(CL_AUTOMATE_TYPE_ID);
 	SetMsgObjectNumberTo(0);

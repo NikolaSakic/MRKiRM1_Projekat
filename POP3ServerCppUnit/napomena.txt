@@ -1,0 +1,1 @@
+Unutar MailBox foldera napraviti nove .dat fajlove (ne koristiti postojece).

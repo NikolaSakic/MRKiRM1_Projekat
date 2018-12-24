@@ -8,17 +8,22 @@ bool g_ProgramEnd = false;
 
 #define StandardMessageCoding 0x00
 
-char* users[4] = {"Nikola\0", "Aleksandar\0", "Stefan\0", "Milan\0"};
-char* passwords[4] = {"123\0", "1234\0", "12345\0", "123456\0"};
+char* users[4] = {"NIKOLA\0", "ALEKSANDAR\0", "STEFAN\0", "MILAN\0"};
+char* passwords[4] = {"ABCD\0", "ABCDEF\0", "ABCDEFGH\0", "ABCDEFGHIJ\0"};
 int INDEKS_USERA;
 int NN;
 
+/* dimensions of key matrix */ 
+const int height = 5;
+const int width = 5;
+
 /*
- *3. broj vremenskih kontrola
- *4. maks stanja za taj automat
- *5. maks f-ja prelaza za jedno stanje
+ *params:
+ *3. number of time control
+ *4. max states for one automate
+ *5. max number of transitions functions
 */
-SrAuto::SrAuto() : FiniteStateMachine(SR_AUTOMATE_TYPE_ID, SR_AUTOMATE_MBX_ID, 0, 7, 1) {
+SrAuto::SrAuto() : FiniteStateMachine(SR_AUTOMATE_TYPE_ID, SR_AUTOMATE_MBX_ID, 0, 8, 1) {
 }
 
 SrAuto::~SrAuto() {
@@ -66,7 +71,7 @@ void SrAuto::Initialize() {
 	InitEventProc(FSM_SR_SENDING, MSG_MSG, (PROC_FUN_PTR)&SrAuto::FSM_Sr_Sending );
 	InitEventProc(FSM_SR_DELETING, MSG_MSG, (PROC_FUN_PTR)&SrAuto::FSM_Sr_Deleting );
 	InitEventProc(FSM_SR_DISCONNECT, MSG_MSG, (PROC_FUN_PTR)&SrAuto::FSM_Sr_Disconnect );
-	
+	InitEventProc(FSM_SR_LAST_STATE, MSG_Sock_Disconected, (PROC_FUN_PTR)&SrAuto::FSM_Sr_Last_State );
 }
 
 void SrAuto::FSM_Sr_Idle(){
@@ -97,7 +102,7 @@ void SrAuto::FSM_Sr_Idle(){
     //Bind
     if( bind(m_Server_Socket,(struct sockaddr *)&server , sizeof(server)) < 0)
     {
- printf("WSAStartup failed with error: %d\n", WSAGetLastError());
+		printf("WSAStartup failed with error: %d\n", WSAGetLastError());
         //print the error message
         perror("bind failed. Error");
         return;
@@ -120,7 +125,7 @@ void SrAuto::FSM_Sr_Idle(){
     }
     puts("Connection accepted");
 
-	/*TODO: send +OK send*/
+
 	char message[] = "+OK\r\n";
 
 	if( send(m_Client_Socket , message , strlen(message), 0) < 0)
@@ -143,6 +148,75 @@ void SrAuto::FSM_Sr_Idle(){
 
 }
 
+void getPosition(char c, char* key, int* position){
+	
+	int i;
+	for(i = 0; i < strlen(key); i++)
+	{
+		if(key[i] == c)
+			break;
+	}
+
+	position[0] = i / width;
+	position[1] = i - position[0]*width;
+
+}
+
+void DecPlayFair(char* text)
+{
+	char key[] = "FTNABCDEGHIKLMOPQRSUVWXYZ\0";
+
+	int position1[2];
+	int position2[2];
+
+	int size = strlen(text);
+	if(size%2 == 1)
+	{
+		text[size] = 'Z';
+		text[size+1] = '\0';
+	}
+
+	for(int i=0; i < strlen(text); i+=2)
+	{
+		getPosition(text[i], key, position1);
+		getPosition(text[i+1], key, position2);
+
+		if(text[i+1] == 'X'){
+			text[i+1] = text[i];
+		}
+		else if(position1[0] == position2[0]){
+			if(position1[1] - 1 < 0)
+				position1[1] = width-1;
+			else
+				position1[1]--;
+
+			if(position2[1] - 1 < 0)
+				position2[1] = width-1;
+			else
+				position2[1]--;
+
+			text[i] = key[position1[0]*width + position1[1]];
+			text[i+1] = key[position2[0]*width + position2[1]];
+		}else if (position1[1] == position2[1]){
+			if(position1[0] - 1 < 0)
+				position1[0] = width-1;
+			else
+				position1[0]--;
+
+			if(position2[0] - 1 < 0)
+				position2[0] = width-1;
+			else
+				position2[0]--;
+
+			text[i] = key[position1[0]*width + position1[1]];
+			text[i+1] = key[position2[0]*width + position2[1]];
+		}
+		else{
+			text[i] = key[position1[0]*width + position2[1]];
+			text[i+1] = key[position2[0]*width + position1[1]];
+		}
+	}
+}
 
 
 void SrAuto::FSM_Sr_Authorising_username(){
@@ -154,7 +228,11 @@ void SrAuto::FSM_Sr_Authorising_username(){
 
 	memcpy(data,buffer + 4,size);
 	data[size-2]=0;
-	printf("%s",data);
+	printf("%s\n",data);
+
+
+	DecPlayFair(data+5);
+
 
 	for(int i = 0; i < NUM_USERS; i++)
 	{
@@ -202,7 +280,9 @@ void SrAuto::FSM_Sr_Authorising_pass(){
 
 	memcpy(data,buffer + 4,size);
 	data[size-2]=0;
-	printf("%s",data);
+	printf("%s\n",data);
+
+	DecPlayFair(data+5);
 
 	if(strcmp(data + 5, passwords[INDEKS_USERA]) == 0) //provera user-a
 	{
@@ -264,7 +344,7 @@ void Mail_Info(unsigned char* arg){
 			strcpy(path,folder); //assuming you hold path in warea
 			strcat(path, de->d_name);//Assuming ypu hold filename in hex
 			file = fopen(path, "rb");
-			//file = fopen(strcat("D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox", de->d_name), "rb");
+			
 			fseek(file, 0, SEEK_END);
 			size += ftell(file);
 			
@@ -362,7 +442,7 @@ void SrAuto::FSM_Sr_Sending(){
 				strcpy(path,folder); //assuming you hold path in warea
 				strcat(path, de->d_name);//Assuming ypu hold filename in hex
 				file = fopen(path, "rb");
-				//file = fopen(strcat("D://RA230-2015//mrkirm1//workspace//POP3ServerCppUnit//MailBox", de->d_name), "rb");
+			
 				fseek(file, 0, SEEK_END);
 				mail_size = ftell(file);
 				fseek(file, 0, SEEK_SET);
@@ -374,12 +454,7 @@ void SrAuto::FSM_Sr_Sending(){
 				strcat(message, " octets\r\n");
 				fread(mail_buffer, mail_size, 1, file);
 				mail_buffer[mail_size] = '\0';
-				/*
-				while(fgets(mail_buffer, 255, file)) {
-					strcat(message, mail_buffer);
-				}		
-				strcat(message, "\r\n");
-				*/
+				
 				strcat(message, mail_buffer);
 				strcat(message, "\r\n.\r\n");
 
@@ -404,6 +479,7 @@ void SrAuto::FSM_Sr_Sending(){
 	SetState(FSM_SR_DELETING);
 }
 
+/* After every sending message to client, server prepare to delete thi message from MailBox */
 void SrAuto::FSM_Sr_Deleting(){
 	char* data = new char[255];
 	uint8* buffer = GetParam(PARAM_DATA);
@@ -479,9 +555,12 @@ void SrAuto::FSM_Sr_Deleting(){
 
 }
 
-void SrAuto::FSM_Sr_Disconnect(){
-	char message[50];
 
+
+void SrAuto::FSM_Sr_Disconnect(){
+	
+	char message[50];
+	
 	strcpy(message, "+OK SESSION ENDED \r\n");
 	
 	if( send(m_Client_Socket , message , strlen(message), 0) < 0)
@@ -490,15 +569,26 @@ void SrAuto::FSM_Sr_Disconnect(){
 		return;
 	}
 	
-	closesocket(m_Server_Socket);
-
-	g_ProgramEnd = true;
+	shutdown(m_Client_Socket, 2);
+	shutdown(m_Server_Socket, 2);
 
 	CloseHandle(m_hThread);
+	closesocket(m_Client_Socket);
+	closesocket(m_Server_Socket);
+		
+	g_ProgramEnd = true;
 
 	SetState(FSM_SR_IDLE);
 }
 
+void SrAuto::FSM_Sr_Last_State(){
+	printf("USAO U LAST STATE\n");
+
+	
+	
+}
+
+/* This metdod sendig message to activate current state */ 
 void SrAuto::NetMsg_2_FSMMsg(const char* apBuffer, uint16 anBufferLength) {
 	
 	PrepareNewMessage(0x00, MSG_MSG);
@@ -521,13 +611,13 @@ DWORD SrAuto::ServerListener(LPVOID param) {
 		nReceivedBytes = recv(pParent->m_Client_Socket, buffer, 255, 0);
 		if (nReceivedBytes == 0)
 		{
-			printf("Disconnected from server!\n");
-			pParent->FSM_Sr_Disconnect();
+			printf("Server disconnected!\n");
+			pParent->FSM_Sr_Last_State();
 			break;
 		}
 		if (nReceivedBytes < 0) {
-			printf("error\n");
-			DWORD err = WSAGetLastError();
+			//printf("Failed with error: %d\n", WSAGetLastError());
+			printf("Server disconnected!\n");
 			break;
 		}
 		pParent->NetMsg_2_FSMMsg(buffer, nReceivedBytes);
@@ -543,7 +633,7 @@ DWORD SrAuto::ServerListener(LPVOID param) {
 }
 
 
-// Automat sam sebi salje poruku za start sistema.
+/* Automat sending message to yourself for starting system */
 void SrAuto::Start(){
 
 	PrepareNewMessage(0x00, MSG_Set_All);

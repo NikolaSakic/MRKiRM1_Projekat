@@ -1,18 +1,10 @@
-﻿Build started 19.12.2018 14:41:22.
+﻿Build started 24.12.2018 11:25:25.
      1>Project "D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\POP3ClientCppUnit\POP3ClientCppUnit.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\POP3ClientCppUnit.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\CppUnit_1.12.1\include /I..\Kernel /ZI /nologo /W0 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ChAuto.cpp ClAuto.cpp MainTest.cpp RUN.cpp UserAuto.cpp main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\CppUnit_1.12.1\include /I..\Kernel /ZI /nologo /W0 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ChAuto.cpp
          ChAuto.cpp
-         Generating Code...
-         Compiling...
-         main.cpp
-         UserAuto.cpp
-         RUN.cpp
-         MainTest.cpp
-         ClAuto.cpp
-         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:..\Kernel /LIBPATH:..\CppUnit_1.12.1\lib winmm.lib ws2_32.lib cppunitd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\POP3ClientCppUnit.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\RA230-2015\mrkirm1\workspace\POP3ClientCppUnit\Debug\POP3ClientCppUnit.lib" /MACHINE:X86 Debug\buffers.obj
          Debug\buffersQueue.obj
@@ -74,4 +66,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:05.84
+Time Elapsed 00:00:01.09

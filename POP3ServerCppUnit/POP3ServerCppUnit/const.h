@@ -19,10 +19,12 @@ enum ClStates {	FSM_SR_IDLE,
 				FSM_SR_MAIL_CHECK,
 				FSM_SR_SENDING,
 				FSM_SR_DELETING,
-				FSM_SR_DISCONNECT };
+				FSM_SR_DISCONNECT,
+				FSM_SR_LAST_STATE};
 
 const uint16 MSG_Set_All = 0x0001;
 const uint16 MSG_MSG = 0x0002;
+const uint16 MSG_Sock_Disconected = 0x0003;
 
 #define ADRESS "10.81.35.43" /*"localhost"*/
 #define PORT 110

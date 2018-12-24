@@ -175,6 +175,8 @@ void ChAuto::FSM_Ch_Connected_Sock_Disconected(){
 	SetMsgObjectNumberTo(0);
 	SendMessage(CL_AUTOMATE_MBX_ID);
 
+	shutdown(m_Socket, 2);
+
 	SetState(FSM_Ch_Idle);
 
 }
